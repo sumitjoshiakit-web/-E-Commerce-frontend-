@@ -1,5 +1,13 @@
-import React from "react";
+import { Link } from 'react-router-dom';
 
-export default function Home() {
-  return <main>Home</main>;
+export function Home() {
+  return (
+    <div>
+      <h1>Welcome to Your Shop 🛍️</h1>
+      <Link to="/shop">Start Shopping</Link>
+      <Link to="/login">Login as Guest</Link>
+    </div>
+  );
 }
+
+
