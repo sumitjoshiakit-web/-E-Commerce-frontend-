@@ -1,5 +1,9 @@
-import React from "react";
+import { useEffect, useState } from 'react';
+import { fetchAllProducts } from '../utils/api';
+import { ProductCard } from '../components/ProductCard';
 
-export default function Shop() {
-  return <main>Shop</main>;
+export function Shop() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // ... fetch and render ProductCard for each
 }
