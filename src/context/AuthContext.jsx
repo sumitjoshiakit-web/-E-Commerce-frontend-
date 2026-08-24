@@ -1,7 +1,35 @@
-import React, { createContext } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { loadFromStorage, saveToStorage } from '../utils/storage';
 
-export const AuthContext = createContext(null);
+const AuthContext = createContext(null);
 
-export default function AuthProvider({ children }) {
-  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(() => loadFromStorage('auth_user', null));
+
+  useEffect(() => {
+    saveToStorage('auth_user', user);
+  }, [user]);
+
+  const loginAsGuest = useCallback(() => {
+    setUser({ id: 'guest', name: 'Guest', role: 'guest' });
+  }, []);
+
+  const logout = useCallback(() => {
+    setUser(null);
+  }, []);
+
+  const value = {
+    user,
+    isAuthenticated: !!user,
+    loginAsGuest,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+  return ctx;
 }
