@@ -1,7 +1,14 @@
-// Local storage utility functions can be added here.
+export function loadFromStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
-export const storage = {
-  get: (key) => localStorage.getItem(key),
-  set: (key, value) => localStorage.setItem(key, value),
-  remove: (key) => localStorage.removeItem(key),
-};
+export function saveToStorage(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {}
+}
