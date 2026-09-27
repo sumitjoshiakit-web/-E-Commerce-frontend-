@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useOrders } from '../context/OrderContext';
 
 export function Checkout() {
   const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
   const { user } = useAuth();
+  const { placeOrder } = useOrders();
 
   if (items.length === 0) {
     return (
@@ -20,7 +22,9 @@ export function Checkout() {
   }
 
   const handlePlaceOrder = () => {
-    window.alert(`Thanks, ${user?.name || 'Guest'}! Your demo order has been placed.`);
+    const order = placeOrder(items, totalItems, totalPrice, user);
+    clearCart();
+    window.alert(`Thanks, ${user?.name || 'Guest'}! Demo order ${order.id} has been placed.`);
     clearCart();
   };
 
